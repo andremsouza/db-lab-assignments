@@ -258,12 +258,12 @@ insert into PaisTransm (NomeEmissora, PaisEmissora, PaisTransm) values ('SuperSp
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Nick Greyling', 'Comentarista');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Camarote');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('SuperSport', 'Africa do Sul', SeqNFIFA.CURRVAL);
-insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Galvão Bueno', 'Comentarista');
+insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Galvï¿½o Bueno', 'Comentarista');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Camarote');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Globo', 'Brasil', SeqNFIFA.CURRVAL);
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Abel Neto', 'Reporter');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Campo de Futebol');
-insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiário');       
+insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiï¿½rio');       
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Sala de Imprensa');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Globo', 'Brasil', SeqNFIFA.CURRVAL);                          
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Luciano do Valle', 'Comentarista');
@@ -271,12 +271,12 @@ insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Camaro
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Bandeirantes', 'Brasil', SeqNFIFA.CURRVAL);
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Tino Marcos', 'Reporter');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Campo de Futebol');
-insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiário');
+insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiï¿½rio');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Sala de Imprensa');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Globo', 'Brasil', SeqNFIFA.CURRVAL);
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Mauro Naves', 'Reporter');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Campo de Futebol');
-insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiário');       
+insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiï¿½rio');       
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Sala de Imprensa');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Globo', 'Brasil', SeqNFIFA.CURRVAL);
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Milton Neves', 'Comentarista');
@@ -287,7 +287,7 @@ insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Camaro
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Bandeirantes', 'Brasil', SeqNFIFA.CURRVAL);
 insert into Profissional (NFIFA, Nome, Profissao) values (SeqNFIFA.nextVal, 'Fernando Fernandes', 'Reporter');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Campo de Futebol');
-insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiário');
+insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Vestiï¿½rio');
 insert into Acesso (NFIFAProfissional, Acesso) values (SeqNFIFA.CURRVAL, 'Sala de Imprensa');
 insert into Emprega (NomeEmissora, PaisEmissora, NFIFAProfissional) values ('Rede Bandeirantes', 'Brasil', SeqNFIFA.CURRVAL);
 
@@ -357,7 +357,7 @@ insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio,
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Alemanha'       , 'Servia'         , to_date('18/06/2022 13:30', 'dd/mm/yyyy hh24:mi'), 3, 2, 'Estadio Nelson Mandela Bay', 'Jerome Damon'           , 'Hernan Maidana'            , 'Eric Dansault'             , 'Martin Hansson'         );
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Eslovenia'      , 'Estados Unidos' , to_date('18/06/2022 16:00', 'dd/mm/yyyy hh24:mi'), 1, 1, 'Estadio Ellis Park'        , 'Mohamed Benouza'        , 'Ricardo Casas'             , 'Laurent Ugo'               , 'MasSo Busacca'        );
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Inglaterra'     , 'Argelia'        , to_date('18/06/2022 20:30', 'dd/mm/yyyy hh24:mi'), 4, 1, 'Estadio Green Point'       , 'Koman Coulibaly'        , 'Altemir Haussman'          , 'Paolo Calcagno'            , 'Hector Baldassi'        );
-insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Holanda'        , 'Japao'          , to_date('19/06/2022 13:30', 'dd/mm/yyyy hh24:mi'), 4, 1, 'Estadio Moses Mabhida'     , 'Eddy Allen Maillet'     , 'Roberto Braatz'            , 'Stefano Ayroldi'           , 'Carlos Eugênio Son'   );
+insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Holanda'        , 'Japao'          , to_date('19/06/2022 13:30', 'dd/mm/yyyy hh24:mi'), 4, 1, 'Estadio Moses Mabhida'     , 'Eddy Allen Maillet'     , 'Roberto Braatz'            , 'Stefano Ayroldi'           , 'Carlos Eugï¿½nio Son'   );
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Gana'           , 'Australia'      , to_date('19/06/2022 16:00', 'dd/mm/yyyy hh24:mi'), 1, 1, 'Estadio Royal Bafokeng'    , 'Joel Aguilar Chicas'    , 'Patricio Basualto'         , 'Darren Cann'               , 'Pablo Pozo'             );
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Camaroes'       , 'Dinamarca'      , to_date('19/06/2022 20:30', 'dd/mm/yyyy hh24:mi'), 3, 0, 'Estadio Loftus Versfeld'   , 'Carlos Batres'          , 'Francisco Mondria'         , 'Michael Mullarkey'         , 'Oscar Ruiz'             );
 insert into Jogo (Numero, Fase, Time1, Time2, DataHora, NGols1, NGols2, Estadio, Arbitro, Assistente1, Assistente2, QuartoArbitro) values (SeqNumero.nextVal, 'Primeira Fase'   , 'Eslovaquia'     , 'Paraguai'       , to_date('20/06/2022 13:30', 'dd/mm/yyyy hh24:mi'), 1, 2, 'Estadio Free State'        , 'Armando Archundia'      , 'Abraham Gonzalez'          , 'Bertino Miranda'           , 'Jorge Larrionda'        );
@@ -1256,5 +1256,5 @@ insert into Jogador (NFIFA, Nome, Apelido, DtaNasc, Posicao, Capitao, Time) valu
 insert into Jogador (NFIFA, Nome, Apelido, DtaNasc, Posicao, Capitao, Time) values (SeqNFIFA.nextVal, 'Humberto Andres Suazo Pontivo'           , 'Humberto Suazo'   , to_date('10/05/1981','dd/mm/yyyy'), 'Atacante'  , 'N', 'Chile');
 insert into Jogador (NFIFA, Nome, Apelido, DtaNasc, Posicao, Capitao, Time) values (SeqNFIFA.nextVal, 'Roberto Andres Cereceda Guajardo'        , 'Roberto Cereceda' , to_date('10/10/1984','dd/mm/yyyy'), 'Meio Campo', 'N', 'Chile');
 insert into Jogador (NFIFA, Nome, Apelido, DtaNasc, Posicao, Capitao, Time) values (SeqNFIFA.nextVal, 'Rodrigo Javier Millar Carvajal'          , 'Rodrigo Millar'   , to_date('03/11/1981','dd/mm/yyyy'), 'Meio Campo', 'N', 'Chile');
---commit; 
+commit; 
 --rollback; 
