@@ -89,9 +89,9 @@ ret_cursor SYS_REFCURSOR;
 BEGIN
 	-- abrindo cursor
 	OPEN ret_cursor FOR
-		SELECT T.PAIS, T.NFIFA, H.HOTEL, H.NDELEGACAO, PH.DTAENTRADA, PH.DTASAIDA FROM TIME T
-			LEFT JOIN HOSPEDA H ON T.PAIS = H.TIME
-			LEFT JOIN PERIODOHOSP PH ON H.TIME = PH.TIME AND H.HOTEL = PH.HOTEL;
+		SELECT T.PAIS, T.NFIFA, H.HOTEL, H.NDELEGACAO, PH.DTAENTRADA, PH.DTASAIDA FROM HOSPEDA H
+			INNER JOIN PERIODOHOSP PH ON H.TIME = PH.TIME AND H.HOTEL = PH.HOTEL;
+			RIGHT JOIN TIME T ON H.TIME = T.PAIS;
 	RETURN ret_cursor;
 	-- Existem poucas exceções (semânticas) relacionadas a esta função. Caberá à aplicação (a seguir) tratar quaisquer outros erros.
 	EXCEPTION
