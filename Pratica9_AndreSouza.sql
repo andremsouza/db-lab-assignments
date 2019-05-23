@@ -49,7 +49,7 @@ PRAGMA EXCEPTION_INIT(e_no_table, -00942);
 BEGIN
 	-- Realizando inserção
 	INSERT INTO JOGO VALUES (p_numero, p_fase, p_time1, p_time2, p_datahora, p_ngols1, p_ngols2, p_estadio, p_arbitro, 
-        p_assistente1, p_assistente2, p_quartoarbitro);
+		p_assistente1, p_assistente2, p_quartoarbitro);
 	
 	-- Tratando possíveis exceções
 	EXCEPTION
@@ -94,8 +94,8 @@ BEGIN
 			LEFT JOIN PERIODOHOSP PH ON H.TIME = PH.TIME AND H.HOTEL = PH.HOTEL;
 	RETURN ret_cursor;
 	-- Existem poucas exceções (semânticas) relacionadas a esta função. Caberá à aplicação (a seguir) tratar quaisquer outros erros.
-    EXCEPTION
-    WHEN OTHERS THEN RAISE;
+	EXCEPTION
+	WHEN OTHERS THEN RAISE;
 END;
 
 /*
@@ -104,90 +104,90 @@ END;
 
 DECLARE
 	-- Tipo: registro para guardar dados da função em uma collection.
-    TYPE T_HOSPEDA IS RECORD (
-        PAIS TIME.PAIS%TYPE,
-        NFIFA TIME.NFIFA%TYPE,
-        HOTEL HOSPEDA.HOTEL%TYPE,
-        NDELEGACAO HOSPEDA.NDELEGACAO%TYPE,
-        DTAENTRADA PERIODOHOSP.DTAENTRADA%TYPE,
-        DTASAIDA PERIODOHOSP.DTASAIDA%TYPE
-    );
+	TYPE T_HOSPEDA IS RECORD (
+		PAIS TIME.PAIS%TYPE,
+		NFIFA TIME.NFIFA%TYPE,
+		HOTEL HOSPEDA.HOTEL%TYPE,
+		NDELEGACAO HOSPEDA.NDELEGACAO%TYPE,
+		DTAENTRADA PERIODOHOSP.DTAENTRADA%TYPE,
+		DTASAIDA PERIODOHOSP.DTASAIDA%TYPE
+	);
 	-- Tipo: coleção para guardar dados da função
-    TYPE T_HOSPEDAGENS IS TABLE OF T_HOSPEDA INDEX BY PLS_INTEGER;
-    v_hospedagens T_HOSPEDAGENS;
-    c1 SYS_REFCURSOR; -- recuperar retorno de get_hospedagem()
+	TYPE T_HOSPEDAGENS IS TABLE OF T_HOSPEDA INDEX BY PLS_INTEGER;
+	v_hospedagens T_HOSPEDAGENS;
+	c1 SYS_REFCURSOR; -- recuperar retorno de get_hospedagem()
 	-- definindo exceções semânticas
 	e_noteams EXCEPTION;
 BEGIN
 	-- Executando função e armazenando em uma coleção
-    c1 := get_hospedagem();
-    FETCH c1 BULK COLLECT INTO v_hospedagens;
-    CLOSE c1;
-    
+	c1 := get_hospedagem();
+	FETCH c1 BULK COLLECT INTO v_hospedagens;
+	CLOSE c1;
+	
 	-- Verificando erro semântico (sem times)
-    IF v_hospedagens.COUNT = 0 THEN
-        RAISE e_noteams;
-    END IF;
+	IF v_hospedagens.COUNT = 0 THEN
+		RAISE e_noteams;
+	END IF;
 
 	-- Imprimindo resultados
-    DBMS_OUTPUT.PUT_LINE('PAIS' || chr(9) || 'NFIFA' || chr(9) || 'HOTEL' || chr(9) || 'NDELEGACAO' || chr(9) || 'DTAENTRADA' ||
-        chr(9) || 'DTASAIDA');
-    FOR i in v_hospedagens.FIRST .. v_hospedagens.LAST LOOP
-        DBMS_OUTPUT.PUT_LINE(v_hospedagens(i).pais || chr(9) || v_hospedagens(i).nfifa || chr(9) || v_hospedagens(i).hotel ||
+	DBMS_OUTPUT.PUT_LINE('PAIS' || chr(9) || 'NFIFA' || chr(9) || 'HOTEL' || chr(9) || 'NDELEGACAO' || chr(9) || 'DTAENTRADA' ||
+		chr(9) || 'DTASAIDA');
+	FOR i in v_hospedagens.FIRST .. v_hospedagens.LAST LOOP
+		DBMS_OUTPUT.PUT_LINE(v_hospedagens(i).pais || chr(9) || v_hospedagens(i).nfifa || chr(9) || v_hospedagens(i).hotel ||
 		chr(9) || v_hospedagens(i).ndelegacao || chr(9) || v_hospedagens(i).dtaentrada || chr(9) || v_hospedagens(i).dtasaida);
-    END LOOP;
+	END LOOP;
 
 	-- Tratando exceções
-    EXCEPTION
-        WHEN SUBSCRIPT_BEYOND_COUNT THEN DBMS_OUTPUT.PUT_LINE('Acesso indevido à uma coleção (elemento fora dos limites).'); ROLLBACK;
-        WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a elemento sem atribuição'); ROLLBACK;
-        WHEN VALUE_ERROR THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a um elemento fora do intervalo do tipo de dados PLS_INTEGER.'); ROLLBACK;
-        WHEN e_noteams THEN DBMS_OUTPUT.PUT_LINE('Não existem times na base de dados.'); ROLLBACK;
-        WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('ERRO NRO: ' || SQLCODE || '; MENSAGEM: ' || SQLERRM); ROLLBACK;
+	EXCEPTION
+		WHEN SUBSCRIPT_BEYOND_COUNT THEN DBMS_OUTPUT.PUT_LINE('Acesso indevido à uma coleção (elemento fora dos limites).'); ROLLBACK;
+		WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a elemento sem atribuição'); ROLLBACK;
+		WHEN VALUE_ERROR THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a um elemento fora do intervalo do tipo de dados PLS_INTEGER.'); ROLLBACK;
+		WHEN e_noteams THEN DBMS_OUTPUT.PUT_LINE('Não existem times na base de dados.'); ROLLBACK;
+		WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('ERRO NRO: ' || SQLCODE || '; MENSAGEM: ' || SQLERRM); ROLLBACK;
 END;
 
 /*
 	Erros comuns foram tratados no segmento de exceções do programa.
 
 	Resultado esperado, para a base padrão:
-    
-    PAIS	NFIFA	HOTEL	NDELEGACAO	DTAENTRADA	DTASAIDA
-    Africa do Sul	2	Southern Sun Grayton	60	08-JUN-22	
-    Mexico	3	Thaba ya Bastswana Eco Lodge	55	08-JUN-22	12-JUN-22
-    Uruguai	4	Protea Hotel	50	08-JUN-22	
-    Franca	5	Pezula Resort Hotel	58	08-JUN-22	12-JUN-22
-    Argentina	6	High Performance Centre	48	09-JUN-22	13-JUN-22
-    Nigeria	7	Hampshire Hotel	40	09-JUN-22	13-JUN-22
-    Coreia do Sul	8	Hunters Rest Hotel	43	09-JUN-22	13-JUN-22
-    Grecia	9	Berverley Hills Hotel	50	09-JUN-22	13-JUN-22
-    Inglaterra	10	Bafckeng Sports Academy	60	09-JUN-22	
-    Estados Unidos	11	Irene Country Lodge	60	09-JUN-22	
-    Argelia	12	Zimbali Lodge	40	10-JUN-22	
-    Eslovenia	13	Hyde Park Southern Sun	59	10-JUN-22	
-    Alemanha	14	Velmore Hotel	53	10-JUN-22	14-JUN-22
-    Australia	15	Kloofzicht Lodge	43	10-JUN-22	
-    Servia	16	Sunnyside Park Hotel	45	10-JUN-22	14-JUN-22
-    Gana	17	Rode Valley	41	10-JUN-22	
-    Holanda	18	Hilton	48	11-JUN-22	15-JUN-22
-    Dinamarca	19	Simola Hotel Country	47	11-JUN-22	15-JUN-22
-    Japao	20	Fancourt Hotel	53	11-JUN-22	15-JUN-22
-    Camaroes	21	Oyster Box	44	11-JUN-22	15-JUN-22
-    Italia	22	Leriba Lodge	54	11-JUN-22	15-JUN-22
-    Paraguai	23	Woodridge Hotel	56	11-JUN-22	15-JUN-22
-    Nova Zelandia	24	Serengati Golf Estate	50	12-JUN-22	16-JUN-22
-    Eslovaquia	25	The Villas Luxury Suite	42	12-JUN-22	16-JUN-22
-    Brasil	26	The Fairway	60	12-JUN-22	
-    Coreia do Norte	27	Protea Hotel Midrand	59	12-JUN-22	
-    Costa do Marfim	28	Riverside Hotel Vanderbijlpark	49	12-JUN-22	
-    Portugal	29	Valley Lodge	60	12-JUN-22	
-    Espanha	30	PUK Sports Village	60	13-JUN-22	17-JUN-22
-    Suica	31	Emerald Casino	59	13-JUN-22	
-    Honduras	32	Hotel Indeba	53	13-JUN-22	
-    Chile	33	Ingwenyama	52	13-JUN-22	17-JUN-22
+	
+	PAIS	NFIFA	HOTEL	NDELEGACAO	DTAENTRADA	DTASAIDA
+	Africa do Sul	2	Southern Sun Grayton	60	08-JUN-22	
+	Mexico	3	Thaba ya Bastswana Eco Lodge	55	08-JUN-22	12-JUN-22
+	Uruguai	4	Protea Hotel	50	08-JUN-22	
+	Franca	5	Pezula Resort Hotel	58	08-JUN-22	12-JUN-22
+	Argentina	6	High Performance Centre	48	09-JUN-22	13-JUN-22
+	Nigeria	7	Hampshire Hotel	40	09-JUN-22	13-JUN-22
+	Coreia do Sul	8	Hunters Rest Hotel	43	09-JUN-22	13-JUN-22
+	Grecia	9	Berverley Hills Hotel	50	09-JUN-22	13-JUN-22
+	Inglaterra	10	Bafckeng Sports Academy	60	09-JUN-22	
+	Estados Unidos	11	Irene Country Lodge	60	09-JUN-22	
+	Argelia	12	Zimbali Lodge	40	10-JUN-22	
+	Eslovenia	13	Hyde Park Southern Sun	59	10-JUN-22	
+	Alemanha	14	Velmore Hotel	53	10-JUN-22	14-JUN-22
+	Australia	15	Kloofzicht Lodge	43	10-JUN-22	
+	Servia	16	Sunnyside Park Hotel	45	10-JUN-22	14-JUN-22
+	Gana	17	Rode Valley	41	10-JUN-22	
+	Holanda	18	Hilton	48	11-JUN-22	15-JUN-22
+	Dinamarca	19	Simola Hotel Country	47	11-JUN-22	15-JUN-22
+	Japao	20	Fancourt Hotel	53	11-JUN-22	15-JUN-22
+	Camaroes	21	Oyster Box	44	11-JUN-22	15-JUN-22
+	Italia	22	Leriba Lodge	54	11-JUN-22	15-JUN-22
+	Paraguai	23	Woodridge Hotel	56	11-JUN-22	15-JUN-22
+	Nova Zelandia	24	Serengati Golf Estate	50	12-JUN-22	16-JUN-22
+	Eslovaquia	25	The Villas Luxury Suite	42	12-JUN-22	16-JUN-22
+	Brasil	26	The Fairway	60	12-JUN-22	
+	Coreia do Norte	27	Protea Hotel Midrand	59	12-JUN-22	
+	Costa do Marfim	28	Riverside Hotel Vanderbijlpark	49	12-JUN-22	
+	Portugal	29	Valley Lodge	60	12-JUN-22	
+	Espanha	30	PUK Sports Village	60	13-JUN-22	17-JUN-22
+	Suica	31	Emerald Casino	59	13-JUN-22	
+	Honduras	32	Hotel Indeba	53	13-JUN-22	
+	Chile	33	Ingwenyama	52	13-JUN-22	17-JUN-22
 */
 
 -- Exercício 4 --------------------------------------------------------------------------------------------------------
 
 /*
-    Função: 
+	Função: 
 */

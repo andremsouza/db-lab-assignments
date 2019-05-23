@@ -30,9 +30,9 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("A"."NUSP"="M"."NUSP")
-   2 - filter("A"."NUSP"=37911061)
-   3 - filter("M"."NUSP"=37911061)
+	1 - access("A"."NUSP"="M"."NUSP")
+	2 - filter("A"."NUSP"=37911061)
+	3 - filter("M"."NUSP"=37911061)
 */
 -- Criação do índice
 /*
@@ -49,8 +49,8 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   3 - access("A"."NUSP"=37911061)
-   4 - filter("M"."NUSP"=37911061)
+	3 - access("A"."NUSP"=37911061)
+	4 - filter("M"."NUSP"=37911061)
 */
 
 /*
@@ -71,7 +71,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("A"."CIDADE" LIKE 'Ap%')
+	1 - filter("A"."CIDADE" LIKE 'Ap%')
 */
 -- Índice criado
 /*
@@ -86,8 +86,8 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   2 - access("A"."CIDADE" LIKE 'Ap%')
-       filter("A"."CIDADE" LIKE 'Ap%')
+	2 - access("A"."CIDADE" LIKE 'Ap%')
+		 filter("A"."CIDADE" LIKE 'Ap%')
 */
 
 /*
@@ -108,7 +108,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("A"."CIDADE" LIKE '%ao' AND "A"."CIDADE" IS NOT NULL)
+	1 - filter("A"."CIDADE" LIKE '%ao' AND "A"."CIDADE" IS NOT NULL)
 */
 
 /*
@@ -131,7 +131,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("P"."GRAU"=1)
+	1 - filter("P"."GRAU"=1)
 */
 -- Índice BITMAP criado
 /*
@@ -145,7 +145,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("P"."GRAU"=1)
+	1 - filter("P"."GRAU"=1)
 */
 -- Índice B-TREE criado
 /*
@@ -159,7 +159,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("P"."GRAU"=1)
+	1 - filter("P"."GRAU"=1)
 */
 
 -- Analisando outras consultas:
@@ -201,7 +201,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("A"."IDADE">18)
+	1 - filter("A"."IDADE">18)
 */
 -- Índice criado
 /*
@@ -215,7 +215,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("A"."IDADE">18)
+	1 - filter("A"."IDADE">18)
 */
 EXPLAIN PLAN FOR SELECT A.NUSP FROM ESQUEMA_ALUNOS.Alunos A WHERE A.Idade > 50;
 SELECT plan_table_output FROM TABLE(dbms_xplan.display());
@@ -231,7 +231,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   2 - access("A"."IDADE">50)
+	2 - access("A"."IDADE">50)
 */
 /*
 O otimizador consegue identificar, por medidas estatísticas, se vale a pena utilizar o índice, dependendo do valor do filtro. Para esta tabela, é esperado que uma parcela predominante (mais de 90%) das tuplas possui IDADE>18, e sendo assim pode ser mais eficiente realizar uma busca sequencial na tabela do que utilizar o índice, na primeira consulta.
@@ -251,7 +251,7 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 EXPLAIN PLAN FOR
 SELECT A.NUSP, A.Nome, D.Nome,(M.NotaP1 + M.NotaP2)/2 AS MEDIA , M.Frequencia
 	FROM ESQUEMA_ALUNOS.Matricula M JOIN ESQUEMA_ALUNOS.Alunos A
-   ON M.NUSP = A.NUSP
+	ON M.NUSP = A.NUSP
 	JOIN ESQUEMA_ALUNOS.Turma T ON M.Turma = T.TurmaId
 	JOIN ESQUEMA_ALUNOS.Discip D ON T.Disciplina = D.DiscipID
 	WHERE (M.NotaP1 + M.NotaP2)/2 = 5.0 AND M.Frequencia = 70;
@@ -273,10 +273,10 @@ SELECT plan_table_output FROM TABLE(dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("M"."NUSP"="A"."NUSP")
-   2 - access("T"."DISCIPLINA"="D"."DISCIPID")
-   3 - access("M"."TURMA"="T"."TURMAID")
-   4 - filter("M"."FREQUENCIA">=70 AND ("M"."NOTAP1"+"M"."NOTAP2")/2>=5.0)
+	1 - access("M"."NUSP"="A"."NUSP")
+	2 - access("T"."DISCIPLINA"="D"."DISCIPID")
+	3 - access("M"."TURMA"="T"."TURMAID")
+	4 - filter("M"."FREQUENCIA">=70 AND ("M"."NOTAP1"+"M"."NOTAP2")/2>=5.0)
 */
 /*
 ---------------------------------------------------------------------------------------------
@@ -299,9 +299,9 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   5 - filter("M"."FREQUENCIA"=70 AND ("M"."NOTAP1"+"M"."NOTAP2")/2=5.0)
-   7 - access("M"."TURMA"="T"."TURMAID")
-   9 - access("M"."NUSP"="A"."NUSP")
+	5 - filter("M"."FREQUENCIA"=70 AND ("M"."NOTAP1"+"M"."NOTAP2")/2=5.0)
+	7 - access("M"."TURMA"="T"."TURMAID")
+	9 - access("M"."NUSP"="A"."NUSP")
   10 - access("T"."DISCIPLINA"="D"."DISCIPID")
 */
 -- Índices criados
@@ -323,11 +323,11 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("M"."NUSP"="A"."NUSP")
-   2 - access("T"."DISCIPLINA"="D"."DISCIPID")
-   3 - access("M"."TURMA"="T"."TURMAID")
-   4 - filter("M"."FREQUENCIA">=70)
-   5 - access(("NOTAP1"+"NOTAP2")/2>=5.0)
+	1 - access("M"."NUSP"="A"."NUSP")
+	2 - access("T"."DISCIPLINA"="D"."DISCIPID")
+	3 - access("M"."TURMA"="T"."TURMAID")
+	4 - filter("M"."FREQUENCIA">=70)
+	5 - access(("NOTAP1"+"NOTAP2")/2>=5.0)
 */
 /*
 ------------------------------------------------------------------------------------------------------------
@@ -356,7 +356,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   9 - access(("NOTAP1"+"NOTAP2")/2=5.0)
+	9 - access(("NOTAP1"+"NOTAP2")/2=5.0)
   11 - access("M"."FREQUENCIA"=70)
   13 - access("M"."TURMA"="T"."TURMAID")
   15 - access("M"."NUSP"="A"."NUSP")
@@ -399,11 +399,11 @@ No plano de consultas, reduz o custo ligeiramente, assim como o número previsto
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("M"."NUSP"="A"."NUSP")
-   2 - access("T"."DISCIPLINA"="D"."DISCIPID")
-   3 - access("M"."TURMA"="T"."TURMAID")
-   4 - filter("M"."FREQUENCIA">=70 AND "M"."FREQUENCIA"<=100)
-   5 - access(("NOTAP1"+"NOTAP2")/2>=5.0 AND ("NOTAP1"+"NOTAP2")/2<=10.0)
+	1 - access("M"."NUSP"="A"."NUSP")
+	2 - access("T"."DISCIPLINA"="D"."DISCIPID")
+	3 - access("M"."TURMA"="T"."TURMAID")
+	4 - filter("M"."FREQUENCIA">=70 AND "M"."FREQUENCIA"<=100)
+	5 - access(("NOTAP1"+"NOTAP2")/2>=5.0 AND ("NOTAP1"+"NOTAP2")/2<=10.0)
 */
 -- Parte 2 -------------------------------------------------------------------------------------------------------------
 -- Exercício 2-1 -------------------------------------------------------------------------------------------------------
@@ -433,8 +433,8 @@ Apenas as consultas que utilizaram operadores ('=') e (LIKE 'Br%', comparando o 
 
 -- Exercício 2-2a ------------------------------------------------------------------------------------------------------
 EXPLAIN PLAN FOR SELECT T.PAIS, T.NFIFA, J.NOME, J.NFIFA FROM TIME T
-    JOIN JOGADOR J ON T.PAIS = J.TIME
-    WHERE T.PAIS LIKE 'A%';
+	 JOIN JOGADOR J ON T.PAIS = J.TIME
+	 WHERE T.PAIS LIKE 'A%';
 SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 
 /*
@@ -451,10 +451,10 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("T"."PAIS"="J"."TIME")
-   3 - access("T"."PAIS" LIKE 'A%')
-       filter("T"."PAIS" LIKE 'A%')
-   4 - filter("J"."TIME" LIKE 'A%')
+	1 - access("T"."PAIS"="J"."TIME")
+	3 - access("T"."PAIS" LIKE 'A%')
+		 filter("T"."PAIS" LIKE 'A%')
+	4 - filter("J"."TIME" LIKE 'A%')
 
 Interpretando o plano de consultas, é aparente que o SGBD foi capaz de usufrui do índice de chave primária da tabela TIME, mas precisou ser feita uma busca sequencial na tabela JOGADOR para recuperar os dados restantes.
 */
@@ -466,8 +466,8 @@ CREATE INDEX IDX_JOGADOR_TIME ON JOGADOR(TIME);
 -- Exercício 2-2c ------------------------------------------------------------------------------------------------------
 
 EXPLAIN PLAN FOR SELECT T.PAIS, T.NFIFA, J.NOME, J.NFIFA FROM TIME T
-    JOIN JOGADOR J ON T.PAIS = J.TIME
-    WHERE T.PAIS LIKE 'A%';
+	 JOIN JOGADOR J ON T.PAIS = J.TIME
+	 WHERE T.PAIS LIKE 'A%';
 SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 
 /*
@@ -485,11 +485,11 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("T"."PAIS"="J"."TIME")
-   3 - access("T"."PAIS" LIKE 'A%')
-       filter("T"."PAIS" LIKE 'A%')
-   5 - access("J"."TIME" LIKE 'A%')
-       filter("J"."TIME" LIKE 'A%')
+	1 - access("T"."PAIS"="J"."TIME")
+	3 - access("T"."PAIS" LIKE 'A%')
+		 filter("T"."PAIS" LIKE 'A%')
+	5 - access("J"."TIME" LIKE 'A%')
+		 filter("J"."TIME" LIKE 'A%')
 
 Interpretando o plano de consulta, podemos ver que, com a adição do índice, não foi necessária nenhuma busca sequencial durante a consulta.
 */
@@ -504,7 +504,7 @@ Neste caso, o índice criado não aparenta ter melhorado muito o desempenho, com
 -- Removendo o índice criado anteriormente
 DROP INDEX IDX_JOGADOR_TIME;
 EXPLAIN PLAN FOR SELECT J.TIME, COUNT(*) FROM JOGADOR J
-    GROUP BY J.TIME;
+	 GROUP BY J.TIME;
 SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 
 /*
@@ -524,7 +524,7 @@ CREATE INDEX IDX_JOGADOR_TIME ON JOGADOR(TIME);
 
 -- Exercício 2-3c ------------------------------------------------------------------------------------------------------
 EXPLAIN PLAN FOR SELECT J.TIME, COUNT(*) FROM JOGADOR J
-    GROUP BY J.TIME;
+	 GROUP BY J.TIME;
 SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 
 /*
@@ -561,7 +561,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("J"."TIME"='Brasil')
+	1 - filter("J"."TIME"='Brasil')
 
 Foi feito um acesso sequencial para a chave de busca.
 */
@@ -584,7 +584,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - access("J"."TIME"='Brasil')
+	1 - access("J"."TIME"='Brasil')
 
 Como o índice contém toda a informação necessária para esta consulta, não ocorreu nenhum acesso a disco diretamente na tabela JOGADOR.
 Além disso, o SGBD se aproveitou da propriedade da B+-tree para realizar uma busca por intervalos no índice criado.
@@ -609,7 +609,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("J"."TIME"='Brasil')
+	1 - filter("J"."TIME"='Brasil')
 
 Esta consulta ainda utilizou o índice. No entanto, a chave de busca é uma concatenação dos atributos NOME e TIME, ordenados em ordem alfabética. A consulta filtra a relação por time, logo o planejador optou uma busca no índice inteiro para realizar a query.
 Sendo assim, é possível notar que esta consulta é mais custosa que a anterior.
@@ -622,26 +622,26 @@ DROP INDEX UK_TIME; -- O SGBD não permite que sejam removidos índices de colun
 -- Escolhendo a tabela JOGO
 /*
 Para esta relação, consultas frequentes seriam:
-    "Selecione os jogos em que o Time X participou", "Selecione os jogos da Fase X", Selecione os jogos da próxima semana", ...
+	 "Selecione os jogos em que o Time X participou", "Selecione os jogos da Fase X", Selecione os jogos da próxima semana", ...
 Estas consultas geralmente trazem parcelas pequenas da tabela, então índices sobre os atributos envolvidos podem aumentar o desempenho.
 Sendo assim, sugiro criar os seguintes índices:
-    - Índice bitmap para o atributo FASE
-    - Índice B-tree composto para os atributos TIME1, NUMERO
-    - Índice B-tree composto para os atributos TIME2, NUMERO
-    - Índice B-tree composto para os atributos DATAHORA
-    Obs.: Optei por índices compostos para reduzir o número de acessos a tabela principal, melhorando consultas que utilizam o atributo NUMERO. No índice simples para o atributo DATAHORA, optei desta maneira pois este pode ter uma alta cardinalidade, maior que nos demais.
+	 - Índice bitmap para o atributo FASE
+	 - Índice B-tree composto para os atributos TIME1, NUMERO
+	 - Índice B-tree composto para os atributos TIME2, NUMERO
+	 - Índice B-tree composto para os atributos DATAHORA
+	 Obs.: Optei por índices compostos para reduzir o número de acessos a tabela principal, melhorando consultas que utilizam o atributo NUMERO. No índice simples para o atributo DATAHORA, optei desta maneira pois este pode ter uma alta cardinalidade, maior que nos demais.
 
 */
 
 -- Escolhendo a tabela PARTICIPA
 /*
 Para esta relação, consulta frequentes seriam:
-    "Selecione todas as participações do jogador X", -- Já coberto pelo índice de PK
-    "Selecione todos as participações em que jogadores ficaram mais de X minutos em campo",
-    "Selecione os jogadores que foram escalados como titulares/reservas"
+	 "Selecione todas as participações do jogador X", -- Já coberto pelo índice de PK
+	 "Selecione todos as participações em que jogadores ficaram mais de X minutos em campo",
+	 "Selecione os jogadores que foram escalados como titulares/reservas"
 Assim como na tabela anterior, estas consultas geralmente trazem parcelas pequenas da relação. Sugiro os seguintes índices:
-    - Índice B-tree baseado em função para os minutos em campo ((HoraSaída-HoraEntrada)*24*60)
-    - Índice bitmap para o atributo ESCALACAO
+	 - Índice B-tree baseado em função para os minutos em campo ((HoraSaída-HoraEntrada)*24*60)
+	 - Índice bitmap para o atributo ESCALACAO
 */
 
 
@@ -664,7 +664,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("TIME1"='Brasil' OR "TIME2"='Brasil')
+	1 - filter("TIME1"='Brasil' OR "TIME2"='Brasil')
 */
 
 EXPLAIN PLAN FOR SELECT NUMERO, TIME1, TIME2, DATAHORA FROM JOGO WHERE FASE = '&FASE';
@@ -680,7 +680,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("FASE"='Primeira Fase')
+	1 - filter("FASE"='Primeira Fase')
 */
 
 EXPLAIN PLAN FOR SELECT NUMERO, TIME1, TIME2, DATAHORA FROM JOGO WHERE DATAHORA BETWEEN TO_DATE('&DATE1', 'DD/MM/YY') AND TO_DATE('&DATE2', 'DD/MM/YY');
@@ -697,10 +697,10 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter(TO_DATE('14/06/22','DD/MM/YY')<=TO_DATE('18/06/22','DD/MM/
-              YY'))
-   2 - filter("DATAHORA"<=TO_DATE('18/06/22','DD/MM/YY') AND
-              "DATAHORA">=TO_DATE('14/06/22','DD/MM/YY'))
+	1 - filter(TO_DATE('14/06/22','DD/MM/YY')<=TO_DATE('18/06/22','DD/MM/
+				  YY'))
+	2 - filter("DATAHORA"<=TO_DATE('18/06/22','DD/MM/YY') AND
+				  "DATAHORA">=TO_DATE('14/06/22','DD/MM/YY'))
 */
 
 CREATE UNIQUE INDEX IDX_JOGO_TIME1_PK ON JOGO (TIME1 ASC, NUMERO ASC) COMPRESS 1;
@@ -724,8 +724,8 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("TIME1"='Brasil' OR "TIME2"='Brasil')
-   2 - access(ROWID=ROWID)
+	1 - filter("TIME1"='Brasil' OR "TIME2"='Brasil')
+	2 - access(ROWID=ROWID)
 */
 /*
 Como esperado, o índice criado foi utilizado, pois a consulta em questão geralmente retorna uma pequena parcela das tuplas da tabela.
@@ -743,7 +743,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("FASE"='Primeira Fase')
+	1 - filter("FASE"='Primeira Fase')
 */
 /*
 ----------------------------------------------------------------------------------------------
@@ -758,7 +758,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   3 - access("FASE"='Final')
+	3 - access("FASE"='Final')
 */
 /*
 Buscando por FASE='Primeira Fase', o índice não é utilizado.
@@ -782,9 +782,9 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter(TO_DATE('01/01/22','DD/MM/YY')<=TO_DATE('31/12/22','DD/MM/YY'))
-   3 - access("DATAHORA">=TO_DATE('01/01/22','DD/MM/YY') AND
-              "DATAHORA"<=TO_DATE('31/12/22','DD/MM/YY'))
+	1 - filter(TO_DATE('01/01/22','DD/MM/YY')<=TO_DATE('31/12/22','DD/MM/YY'))
+	3 - access("DATAHORA">=TO_DATE('01/01/22','DD/MM/YY') AND
+				  "DATAHORA"<=TO_DATE('31/12/22','DD/MM/YY'))
 */
 /*
 Como esperado, o índice criado foi utilizado. Vale observar que o planejador de consulta utilizou o índice, mesmo com parâmetros que fazem com que o resultado retorne todas as tuplas da tabela.
@@ -807,7 +807,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
+	1 - filter(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
 */
 
 EXPLAIN PLAN FOR SELECT * FROM PARTICIPA WHERE ESCALACAO = '&ESCALACAO';
@@ -823,7 +823,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("ESCALACAO"='Titular')
+	1 - filter("ESCALACAO"='Titular')
 */
 
 CREATE INDEX IDX_PARTICIPA_MINUTOSJOGADOS ON PARTICIPA ((HORASAIDA-HORAENTRADA)*24*60);
@@ -843,7 +843,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   2 - access(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
+	2 - access(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
 */
 /*
 O índice é utilizado, como esperado. Note que o planejador ainda opta por usá-lo, mesmo com parâmetros que retornam todas as participações com valores não-nulos para HORAENTRADA e HORASAIDA.
@@ -862,7 +862,7 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("ESCALACAO"='Titular')
+	1 - filter("ESCALACAO"='Titular')
 */
 /*
 -------------------------------------------------------------------------------
@@ -875,7 +875,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   1 - filter("ESCALACAO"='Reserva')
+	1 - filter("ESCALACAO"='Reserva')
 */
 /*
 O planejador de consultas optou por não utilizar o índice bitmap criado. Isso provavelmente acontece por causa da distribuição dos dados entre os dois possíveis valores para ESCALACAO ('Titular', 'Reserva'), que se aproxima de 50% para cada valor.
@@ -923,14 +923,14 @@ Relatório de erros -
 ORA-30554: o índice baseado na função A9778985.IDX_PARTICIPA_MINUTOSJOGADOS está desativado
 30554. 00000 -  "function-based index %s.%s is disabled"
 *Cause:    An attempt was made to access a function-based index that has
-           been marked disabled because the function on which the index
-           depends has been changed.
+			  been marked disabled because the function on which the index
+			  depends has been changed.
 *Action:   Perform one of the following actions
-           -- drop the specified index using the DROP INDEX command
-           -- rebuild the specified index using the ALTER INDEX REBUILD command
-           -- enable the specified index using the ALTER INDEX ENABLE command
-           -- make the specified index usable using the ALTER INDEX UNUSABLE
-           command
+			  -- drop the specified index using the DROP INDEX command
+			  -- rebuild the specified index using the ALTER INDEX REBUILD command
+			  -- enable the specified index using the ALTER INDEX ENABLE command
+			  -- make the specified index usable using the ALTER INDEX UNUSABLE
+			  command
 */
 ALTER INDEX IDX_PARTICIPA_MINUTOSJOGADOS ENABLE;
 
@@ -972,5 +972,5 @@ SELECT plan_table_output FROM TABLE (dbms_xplan.display());
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   2 - access(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
+	2 - access(("HORASAIDA"-"HORAENTRADA")*24*60>=60)
 */
