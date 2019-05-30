@@ -1,6 +1,6 @@
 /*
 	Nome: André Moreira Souza    N°USP: 9778985
-	Prática 8 - PL/SQL - Coleções
+	Prática 9 - PL/SQL - Procedimentos e Funções
 */
 
 -- Exercício 1 --------------------------------------------------------------------------------------------------------
@@ -189,5 +189,96 @@ END;
 -- Exercício 4 --------------------------------------------------------------------------------------------------------
 
 /*
-	Função: 
+	Função: Recebe como entrada o nome de uma equipe de segurança. Apenas para a equipe especificada, recuperar:
+		Para cada segurança, recuperar seu nome, equipe, e todos os estádios onde sua equipe trabalhou durante jogos, assim como o número de ocorrências total da sua equipe por estádio. 
+		Retornar tuplas ordenadas pelo número de ocorrências, em ordem decrescente.
+		Retornar mesmo os seguranças que não trabalharam em nenhum estádio. Não retornar seguranças sem equipe.
+*/
+
+/*
+	Inserindo tuplas para testar resultados da função.
+*/
+
+INSERT INTO TRABALHA T VALUES ('Seguranca dos Arbitros', 48, 'Escolta dos arbitros');
+INSERT INTO TRABALHA T VALUES ('Seguranca dos Arbitros', 47, 'Escolta dos arbitros');
+INSERT INTO TRABALHA T VALUES ('Seguranca dos Arbitros', 28, 'Escolta dos arbitros');
+INSERT INTO OCORRENCIATRABALHA OT VALUES ('Seguranca dos Arbitros', 48, 7, 'Discussão entre árbitros.');
+INSERT INTO OCORRENCIATRABALHA OT VALUES ('Seguranca dos Arbitros', 47, 8, 'Discussão entre árbitros.');
+INSERT INTO OCORRENCIATRABALHA OT VALUES ('Seguranca dos Arbitros', 28, 9, 'Discussão entre árbitros.');
+
+CREATE OR REPLACE function get_segurancas_por_estadio(
+  v_equipe in EQUIPE.NOME%TYPE
+) return SYS_REFCURSOR
+is
+ret_cursor SYS_REFCURSOR;
+begin
+	OPEN ret_cursor FOR 
+		SELECT S.NOME NOMESEGURANCA, E.NOME EQUIPE, ES.NOME ESTADIO, COUNT(OT.NOCORRENCIA) NOCORRENCIAS FROM EQUIPE E
+			LEFT JOIN TRABALHA T ON T.EQUIPE = E.NOME
+			INNER JOIN OCORRENCIATRABALHA OT ON T.EQUIPE = OT.EQUIPE AND T.JOGO = OT.JOGO
+			INNER JOIN JOGO J ON T.JOGO = J.NUMERO
+			INNER JOIN ESTADIO ES ON J.ESTADIO = ES.NOME
+			INNER JOIN SEGURANCA S ON E.NOME = S.EQUIPE
+			WHERE E.NOME = v_equipe
+			GROUP BY ES.NOME, E.NOME, S.NOME
+			ORDER BY NOCORRENCIAS DESC;
+	RETURN ret_cursor;
+	-- Exceções serão tratadas no programa principal
+end;
+
+/*
+	Criando programa PL/SQL para testar a função
+*/
+
+DECLARE
+	-- Tipo: registro para guardar dados da função em uma collection.
+	TYPE T_REC IS RECORD (
+		NOMESEG SEGURANCA.NOME%TYPE,
+		EQUIPESEG EQUIPE.NOME%TYPE,
+		ESTADIOSEG ESTADIO.NOME%TYPE,
+		NOCORRENCIAS NUMBER
+	);
+	-- Tipo: coleção para guardar dados da função
+	TYPE T_RET IS TABLE OF T_REC INDEX BY PLS_INTEGER;
+	v_equipe EQUIPE.NOME%TYPE;
+	v_ret T_RET;
+	c1 SYS_REFCURSOR; -- recuperar retorno de get_segurancas_por_estadio()
+	-- definindo exceções semânticas
+	e_nosecurity EXCEPTION;
+BEGIN
+	-- Neste caso, simulando chamada de função para o parâmetro equipe := 'Seguranca dos Arbitros'
+	v_equipe := 'Seguranca dos Arbitros';
+
+	-- Executando função e armazenando em uma coleção
+	c1 := get_segurancas_por_estadio(v_equipe);
+	FETCH c1 BULK COLLECT INTO v_ret;
+	CLOSE c1;
+	
+	-- Verificando erro semântico (sem times)
+	IF v_ret.COUNT = 0 THEN
+		RAISE e_nosecurity;
+	END IF;
+
+	-- Imprimindo resultados
+	DBMS_OUTPUT.PUT_LINE('NOMESEG' || chr(9) || 'EQUIPE' || chr(9) || 'ESTADIO' || chr(9) || 'NOCORRENCIAS');
+	FOR i in v_ret.FIRST .. v_ret.LAST LOOP
+		DBMS_OUTPUT.PUT_LINE(v_ret(i).nomeseg || chr(9) || v_ret(i).equipeseg || chr(9) || v_ret(i).estadioseg || chr(9) || v_ret(i).nocorrencias);
+	END LOOP;
+
+	-- -- Tratando exceções
+	EXCEPTION
+		WHEN SUBSCRIPT_BEYOND_COUNT THEN DBMS_OUTPUT.PUT_LINE('Acesso indevido à uma coleção (elemento fora dos limites).'); ROLLBACK;
+		WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a elemento sem atribuição'); ROLLBACK;
+		WHEN VALUE_ERROR THEN DBMS_OUTPUT.PUT_LINE('Tentativa de acesso a um elemento fora do intervalo do tipo de dados PLS_INTEGER.'); ROLLBACK;
+		WHEN e_nosecurity THEN DBMS_OUTPUT.PUT_LINE('Não existem seguranças com equipes.'); ROLLBACK;
+		WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('ERRO NRO: ' || SQLCODE || '; MENSAGEM: ' || SQLERRM); ROLLBACK;
+END;
+
+/*
+	Exceções comuns foram tratadas no programa em PL/SQL. A seguir, está o resultado esperado (para a base de dados padrão com as inserções acima) (equipe = 'Seguranca dos Arbitros'):
+	
+	NOMESEG	EQUIPE	ESTADIO	NOCORRENCIAS
+	Makhenkes Stfile	Seguranca dos Arbitros	Estadio Free State	2
+	Makhenkes Stfile	Seguranca dos Arbitros	Estadio Loftus Versfeld	1
+	Makhenkes Stfile	Seguranca dos Arbitros	Estadio Mbombela	1
 */
