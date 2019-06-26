@@ -154,7 +154,7 @@ END;
 /*
     Criando e populando tabela de objetos Time_objtyp
 */
-DROP TABLE TIME_OR;
+--DROP TABLE TIME_OR;
 CREATE TABLE TIME_OR OF Time_objtyp;
 INSERT INTO TIME_OR VALUES (Time_objtyp('Africa do Sul'  ,  1, EMPTY_BLOB(),'Carlos Alberto Parreira'     ));
 INSERT INTO TIME_OR VALUES (Time_objtyp('Mexico'         ,  2, EMPTY_BLOB(),'Javier Aguirre'              ));
@@ -270,6 +270,12 @@ SELECT J.NFIFA, J.NOME, J.CLUBES, J.TIME, J.POSICAO, DEREF(J.time).pais FROM JOG
     Não foi possível utilizar a referência para os objetos em questão.
     Sendo assim, após obter o objeto, estaremos fazendo um UPDATE,
     atualizando o valor na Object Table.
+
+    Esse programa PL/SQL poderia ser incorporado ao objeto como um método
+    adicional, fazendo chamadas para os demais métodos do próprio objeto.
+    No entanto, isso levaria a um maior acoplamento entre o objeto
+    Jogador_objtyp e a tabela JOGADOR_OR. Sendo assim, optei por manter apenas
+    como um programa PL/SQL.
 */
 DECLARE
     TYPE T_JOGADORES_OR IS TABLE OF Jogador_objtyp INDEX BY PLS_INTEGER;
